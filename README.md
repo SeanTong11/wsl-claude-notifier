@@ -1,6 +1,6 @@
 # wsl-claude-notifier
 
-> Windows native toast notifications for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) running in WSL2 + tmux.
+> Windows toast notifications for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) hooks in WSL2 — with tmux session awareness and one-click window jump.
 
 [中文说明](README.zh-CN.md)
 
@@ -8,15 +8,17 @@
 
 ## Why?
 
-Claude Code in WSL2 has no built-in way to notify you on Windows when a task finishes or needs input. You end up constantly alt-tabbing back to check. Worse, if you run multiple Claude sessions across tmux windows, there's no way to know *which one* needs attention — let alone jump straight to it.
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code) supports [hooks](https://docs.anthropic.com/en/docs/claude-code/hooks) to run shell commands on events like task completion or permission requests. But if you're running Claude Code inside **WSL2**, there's no built-in way to surface these events as **Windows notifications**. You end up alt-tabbing back to check constantly.
 
-This tool solves all of that:
+It gets worse with **tmux** — multiple Claude sessions across different windows, and no way to know *which one* needs attention, let alone jump to it.
 
-- **Windows native toast** — real Win11 notifications when Claude Code stops or needs input, no polling
-- **Tmux-aware** — title shows `[session:window]` so you instantly know which session finished
-- **One-click jump** — click "Jump" on the toast to activate Windows Terminal and switch directly to the right tmux window _(pane-level jump is WIP — blocked by tmux mouse mode overriding focus on window activation)_
-- **Claude icon** — notifications are visually distinct with the Claude logo
-- **Zero config** — one script installs everything: BurntToast, scripts, protocol handler, Claude Code hooks
+This tool bridges that gap:
+
+- **Windows native toast** — real Win11 toast notifications via [BurntToast](https://github.com/Windos/BurntToast) when Claude Code stops or needs input
+- **Tmux-aware** — notification title shows `[session:window]` so you instantly know which session finished
+- **One-click jump** — click "Jump" on the toast to activate Windows Terminal and switch directly to the right tmux window _(pane-level jump is WIP)_
+- **Claude icon** — notifications display the Claude logo for easy visual identification
+- **Zero config** — one script installs everything: PowerShell module, shell scripts, custom protocol handler, Claude Code hooks
 
 ## Tested Environment
 
