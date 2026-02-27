@@ -55,6 +55,10 @@ bash uninstall.sh
 ## 故障排查
 
 **通知不弹出？**
+- 手动测试通知：
+  ```bash
+  echo '{"hook_event_name":"Stop","cwd":"/tmp","last_assistant_message":"测试消息"}' | ~/.local/bin/wsl-tmux-notify.sh
+  ```
 - 验证 BurntToast：`powershell.exe -NoProfile -Command "Import-Module BurntToast; New-BurntToastNotification -Text 'Test'"`
 - 检查 Windows 通知设置（设置 > 系统 > 通知）
 - 确认 `jq` 已安装：`which jq`

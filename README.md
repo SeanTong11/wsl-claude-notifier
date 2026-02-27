@@ -143,6 +143,10 @@ Removes all deployed files, registry entries, and Claude Code hooks.
 ## Troubleshooting
 
 **No toast appears?**
+- Test notification directly:
+  ```bash
+  echo '{"hook_event_name":"Stop","cwd":"/tmp","last_assistant_message":"Test message"}' | ~/.local/bin/wsl-tmux-notify.sh
+  ```
 - Verify BurntToast: `powershell.exe -NoProfile -Command "Import-Module BurntToast; New-BurntToastNotification -Text 'Test'"`
 - Check Windows notification settings (Settings > System > Notifications)
 - Ensure `jq` is installed: `which jq`
