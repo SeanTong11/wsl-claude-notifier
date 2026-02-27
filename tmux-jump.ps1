@@ -4,7 +4,7 @@ param([string]$uri)
 
 $logFile = "$PSScriptRoot\tmux-jump.log"
 
-# Parse URI: tmux-jump://session:window_index
+# Parse URI: tmux-jump://session:window_index.pane_index
 # Don't use [System.Uri] — it treats ":N" as a port number and drops it
 $target = $uri -replace '^tmux-jump://', ''
 # Strip trailing slash if present

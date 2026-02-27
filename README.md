@@ -2,6 +2,8 @@
 
 > Windows native toast notifications for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) running in WSL2 + tmux.
 
+[中文说明](README.zh-CN.md)
+
 ![Toast notification example](assets/demo.png)
 
 ## Why?
@@ -12,7 +14,7 @@ This tool solves all of that:
 
 - **Windows native toast** — real Win11 notifications when Claude Code stops or needs input, no polling
 - **Tmux-aware** — title shows `[session:window]` so you instantly know which session finished
-- **One-click jump** — click "Jump" on the toast to activate Windows Terminal and switch directly to the right tmux window *and pane*
+- **One-click jump** — click "Jump" on the toast to activate Windows Terminal and switch directly to the right tmux window _(pane-level jump is WIP — blocked by tmux mouse mode overriding focus on window activation)_
 - **Claude icon** — notifications are visually distinct with the Claude logo
 - **Zero config** — one script installs everything: BurntToast, scripts, protocol handler, Claude Code hooks
 
@@ -115,7 +117,7 @@ Claude Code hook event (Stop / Notification)
   │  stdin: JSON with event type, message, cwd
   ▼
 wsl-tmux-notify.sh
-  ├─ Parses event, reads tmux session:window:pane
+  ├─ Parses event, reads tmux session:window.pane
   ├─ Builds BurntToast command with Jump button + icon
   └─ PowerShell -EncodedCommand (UTF-16LE) ──► Windows toast notification
                                                         │
@@ -127,7 +129,7 @@ wsl-tmux-notify.sh
                                                         ▼
                                               tmux-jump.ps1
                                                 ├─ SetForegroundWindow() → activate Windows Terminal
-                                                └─ wsl.exe tmux-jump.sh → switch tmux window + pane
+                                                └─ wsl.exe tmux-jump.sh → switch tmux window
 ```
 
 ## Uninstall
@@ -146,31 +148,14 @@ Removes all deployed files, registry entries, and Claude Code hooks.
 - Ensure `jq` is installed: `which jq`
 
 **Jump button doesn't switch window?**
-- Test protocol: `powershell.exe -Command "Start-Process 'tmux-jump://main:0.0'"`
+- Check current tmux target: `tmux display-message -p '#{session_name}:#{window_index}.#{pane_index}'`
+- Test jump directly: `bash ~/.local/bin/tmux-jump.sh <session>:<window>.<pane>`
+- Test protocol handler: `powershell.exe -Command "Start-Process 'tmux-jump://<session>:<window>.<pane>'"`
 - Check handler exists: `ls /mnt/c/Users/*/.wsl-claude-notifier/tmux-jump.ps1`
+- Check protocol log: `cat /mnt/c/Users/*/.wsl-claude-notifier/tmux-jump.log`
 
 **No Jump button on toast?**
 - Jump button only appears when Claude Code runs inside tmux (`echo $TMUX` should have output)
-
----
-
-## 中文说明
-
-在 WSL2 + tmux 环境下，为 Claude Code 提供 Windows 原生 toast 通知。
-
-**痛点：** WSL2 没有原生的 Windows 通知机制，多个 tmux 会话更难追踪哪个 Claude 完成了任务。
-
-**功能：**
-- Claude Code 完成任务或需要输入时弹出 Windows toast 通知
-- 通知标题显示 `[session:window]` 以区分多个 tmux 会话
-- 点击 "Jump" 按钮自动激活 Windows Terminal 并切换到对应 tmux 窗口和 pane
-- 通知显示 Claude 图标
-
-**安装：** `git clone` 后运行 `bash install.sh` 即可一键完成。
-
-**卸载：** 运行 `bash uninstall.sh`。
-
----
 
 ## License
 
