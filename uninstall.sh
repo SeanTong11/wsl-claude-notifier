@@ -16,14 +16,15 @@ UNREG_SCRIPT='Remove-Item -Path "HKCU:\Software\Classes\tmux-jump" -Recurse -For
 ENCODED=$(printf '%s' "$UNREG_SCRIPT" | iconv -f UTF-8 -t UTF-16LE | base64 -w 0)
 powershell.exe -NoProfile -EncodedCommand "$ENCODED"
 
-# Step 2: Remove Windows-side files
-echo "[2/4] Removing ${WSL_WIN_DIR}/..."
-if [ -d "$WSL_WIN_DIR" ]; then
-  rm -r "$WSL_WIN_DIR"
-  echo "  OK: directory removed"
-else
-  echo "  SKIP: directory not found"
-fi
+# Step 2: Remove Windows-side files (current + legacy directory name)
+echo "[2/4] Removing Windows-side files..."
+for dir in "$WSL_WIN_DIR" "/mnt/c/Users/${WIN_USER}/.wsl-tmux-notify"; do
+  if [ -d "$dir" ]; then
+    rm -r "$dir"
+    echo "  OK: removed $dir"
+  fi
+done
+echo "  Done"
 
 # Step 3: Remove WSL-side scripts
 echo "[3/4] Removing scripts from ${BIN_DIR}/..."

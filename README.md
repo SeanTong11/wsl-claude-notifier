@@ -27,6 +27,12 @@ The installer will:
 4. Register `tmux-jump://` custom protocol
 5. Add hooks to `~/.claude/settings.json`
 
+## Tested Environment
+
+- Windows 11 + Windows Terminal
+- WSL2 (Ubuntu)
+- tmux
+
 ## Prerequisites
 
 - WSL2 with `jq` installed (`sudo apt install jq`)
