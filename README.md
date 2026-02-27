@@ -137,7 +137,7 @@ Removes all deployed files, registry entries, and Claude Code hooks.
 
 **Jump button doesn't switch window?**
 - Test protocol: `powershell.exe -Command "Start-Process 'tmux-jump://main:0'"`
-- Check handler exists: `ls /mnt/c/Users/*/. wsl-claude-notifier/tmux-jump.ps1`
+- Check handler exists: `ls /mnt/c/Users/*/.wsl-claude-notifier/tmux-jump.ps1`
 
 **No Jump button on toast?**
 - Jump button only appears when Claude Code runs inside tmux (`echo $TMUX` should have output)
